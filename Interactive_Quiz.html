@@ -1,4 +1,3 @@
-
 <!--
                   _\|||/
 	           (o o)
@@ -18,7 +17,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>=-Quiz bíblico-=</title>
-<center><img src="https://i.gifer.com/YOPR.gif" width=180 height=160></center>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <center><img src="https://i.gifer.com/YOPR.gif" width=180 height=160></center>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +57,7 @@
 </head>
 <body>
 
-<h1>Quiz Conhecimentos Bibico</h1>
+<h1>Quiz Conhecimentos Bíblicos</h1>
 
 <form id="quiz-form">
     <!-- Perguntas -->
@@ -102,7 +102,8 @@
         <label><input type="radio" name="q4" value="b"> Ungiu 3 reis de Israel: José, Saul e Davi</label><br>
         <label><input type="radio" name="q4" value="c"> Sucedeu o profeta Eli</label><br>
         <label><input type="radio" name="q4" value="d"> Teve uma visão enquanto ainda era muito novo</label><br>
-        <label><input type="radio" name="q4" value="e"> Ele foi o último dos juízes e o primeiro da escola profética.</label><br>
+        <label><input type="radio" name="q4
+" value="e"> Ele foi o último dos juízes e o primeiro da escola profética.</label><br>
     </div>
 
     <!-- Pergunta 5 -->
@@ -130,19 +131,18 @@
     <!-- Pergunta 7 -->
     <div class="question">
         <h2>Pergunta 7:</h2>
-        <p>Quando bebê, como Moisés foi salvo do decreto infanticida do Faraó?</P>
+        <p>Quando bebê, como Moisés foi salvo do decreto infanticida do Faraó?</p>
         <label><input type="radio" name="q7" value="a"> Foi levado às pressas para fora do Egito</label><br>
         <label><input type="radio" name="q7" value="b"> Foi escondido dentro de uma caverna</label><br>
         <label><input type="radio" name="q7" value="c"> Foi colocado num cesto e lançado no rio</label><br>
         <label><input type="radio" name="q7" value="d"> Foi levado ao templo para servir a Deus</label><br>
-        <label><input type="radio" name="q7" value="e"> Foi levado pra beira do rio jordão</label><br>
+        <label><input type="radio" name="q7" value="e"> Foi levado pra beira do rio Jordão</label><br>
     </div>
 
     <!-- Pergunta 8 -->
     <div class="question">
         <h2>Pergunta 8:</h2>
         <p>Quantos eram os discípulos mais próximos de Jesus?</p>
-        <label><input type="radio" name="q8
         <label><input type="radio" name="q8" value="a"> 10</label><br>
         <label><input type="radio" name="q8" value="b"> 7</label><br>
         <label><input type="radio" name="q8" value="c"> 5</label><br>
@@ -180,58 +180,94 @@
     <div id="resultado"></div>
 </div>
 
+<!-- Adicione um campo de senha ao formulário -->
+<input type="password" id="password" name="password" placeholder="Digite a senha para reiniciar">
+
+<!-- Adicione um
+<!-- Adicione um elemento canvas para o gráfico -->
+<canvas id="chart" width="400" height="200"></canvas>
+
 <script>
-    document.getElementById('quiz-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+document.getElementById('quiz-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-        // Defina as respostas corretas aqui
-        var respostasCorretas = {
-            q1: 'c', // Pergunta 1
-            q2: 'e', // Pergunta 2
-            q3: 'c', // Pergunta 3
-            q4: 'b', // Pergunta 4
-            q5: 'a', // Pergunta 5
-            q6: 'b', // Pergunta 6
-            q7: 'c', // Pergunta 7
-            q8: 'd', // Pergunta 8
-            q9: 'c', // Pergunta 9
-            q10: 'a' // Pergunta 10
-        };
+    // Verifique a senha
+    var senha = document.getElementById('password').value;
+    if (senha === 'sua_senha_secreta') {
+        // Lógica para reiniciar os resultados
+        localStorage.removeItem('pontuacao');
+        localStorage.removeItem('totalPerguntas');
+        alert('Resultados reiniciados.');
+        return;
+    }
 
-        // Processar respostas
-        var respostas = new FormData(this);
-        var pontuacao = 0;
+    // Defina as respostas corretas aqui
+    var respostasCorretas = {
+        q1: 'c',
+        q2: 'e',
+        q3: 'c',
+        q4: 'b',
+        q5: 'a',
+        q6: 'b',
+        q7: 'c',
+        q8: 'd',
+        q9: 'c',
+        q10: 'a'
+    };
 
-        // Calcula a pontuação
-        respostas.forEach(function(valor, chave) {
-            if (respostasCorretas[chave] === valor) {
-                pontuacao++;
-            }
-        });
+    // Processar respostas
+    var respostas = new FormData(this);
+    var pontuacao = parseInt(localStorage.getItem('pontuacao')) || 0;
+    var totalPerguntas = parseInt(localStorage.getItem('totalPerguntas')) || 0;
 
-        // Exibe o resultado
-        var resultadoContainer = document.getElementById('resultado-container');
-        resultadoContainer.style.display = 'block';
-
-        var resultadoDiv = document.getElementById('resultado');
-        resultadoDiv.innerHTML = 'Você marcou ' + pontuacao + ' de 10 pontos.<br>';
-
-        // Destaca as respostas corretas e incorretas
-        respostas.forEach(function(valor, chave) {
-            var resultadoPergunta = document.createElement('p');
-            resultadoPergunta.textContent = 'Pergunta ' + chave.substr(1) + ': ';
-
-            if (respostasCorretas[chave] === valor) {
-                resultadoPergunta.classList.add('resultado-correto');
-                resultadoPergunta.innerHTML += 'Correto';
-            } else {
-                resultadoPergunta.classList.add('resultado-incorreto');
-                resultadoPergunta.innerHTML += 'Incorreto';
-            }
-
-            resultadoDiv.appendChild(resultadoPergunta);
-        });
+    // Calcula a pontuação
+    respostas.forEach(function(valor, chave) {
+        totalPerguntas++;
+        if (respostasCorretas[chave] === valor) {
+            pontuacao++;
+        }
     });
+
+    // Salva os resultados no localStorage
+    localStorage.setItem('pontuacao', pontuacao);
+    localStorage.setItem('totalPerguntas', totalPerguntas);
+
+    // Exibe o resultado
+    var resultadoContainer = document.getElementById('resultado-container');
+    resultadoContainer.style.display = 'block';
+
+    var resultadoDiv = document.getElementById('resultado');
+    resultadoDiv.innerHTML = 'Você marcou ' + pontuacao + ' de ' + totalPerguntas + ' pontos (' + (pontuacao / totalPerguntas * 100).toFixed(2) + '%).<br>';
+
+    // Destaca as respostas corretas e incorretas
+    respostas.forEach(function(valor, chave) {
+        var resultadoPergunta = document.createElement('p');
+        resultadoPergunta.textContent = 'Pergunta ' + chave.substr(1) + ': ';
+
+        if (respostasCorretas[chave] === valor) {
+            resultadoPergunta.classList.add('resultado-correto');
+            resultadoPergunta.innerHTML += 'Correto';
+        } else {
+            resultadoPergunta.classList.add('resultado-incorreto');
+            resultadoPergunta.innerHTML += 'Incorreto';
+        }
+
+        resultadoDiv.appendChild(resultadoPergunta);
+    });
+
+    // Gere o gráfico
+    var ctx = document.getElementById('chart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Corretas', 'Incorretas'],
+            datasets: [{
+                data: [pontuacao, totalPerguntas - pontuacao],
+                backgroundColor: ['green', 'red']
+            }]
+        }
+    });
+});
 </script>
 
 </body>
